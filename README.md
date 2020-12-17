@@ -1,4 +1,4 @@
-# Terraform Module AWS WAF
+# Terraform Module AWS WAF v2
 
 Terraform module irá provisionar os seguintes recursos:
 

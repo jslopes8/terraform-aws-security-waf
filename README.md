@@ -88,6 +88,7 @@ module "waf_webacl" {
 | managed_rule_group | Uma declaração de regra usada para executar as regras que são definidas em um grupo de regras gerenciado pela AWS. | `yes` | `list` | `[]` |
 | default_tags | Block de chave-valor que fornece o taggeamento para todos os recursos criados em seu WAF WebACL. | `no` | `map` |`{}` |
 | rate_based | Uma regra baseada em taxa rastreia a taxa de solicitações para cada origem IP addresse aciona a ação da regra quando a taxa excede um limite que você especifica no número de solicitações em qualquer 5-minuteintervalo de tempo. | `no` | `list` | `[]` |
+| scope | Especifica se isso é para uma distribuição do AWS CloudFront ou para um aplicativo regional. Os valores válidos são `CLOUDFRONT` ou `REGIONAL`. Para trabalhar com o CloudFront, você também deve especificar a região us-east-1(N. Virginia) no provedor AWS. | `yes` | `string` | `` |
 
 ## Variable Outputs
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

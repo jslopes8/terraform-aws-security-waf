@@ -7,7 +7,7 @@ Terraform module irá provisionar os seguintes recursos:
 ## Usage
 ```hcl
 module "waf_webacl" {
-  source = ""
+  source = "git@github.com:jslopes8/terraform-aws-security-waf.git?ref=v0.1"
 
   web_acl_name  = "tf-webacl-prod"
   description   = "Example of a managed rule."

@@ -1,0 +1,166 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Desconhecido </title></head><body>
+<h1 id="terraform-module-aws-waf-v2">Terraform Module AWS WAF v2</h1>
+<p>Terraform module irá provisionar os seguintes recursos:</p>
+<ul>
+<li><a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/waf_web_acl">WAF WebACL</a></li>
+</ul>
+<h2 id="usage">Usage</h2>
+<p>```hcl
+module "waf_webacl" {
+  source = "git@github.com:jslopes8/terraform-aws-security-waf.git?ref=v0.1"</p>
+<p>web_acl_name  = "tf-webacl-prod"
+  description   = "Example of a managed rule."
+  scope         = "REGIONAL"</p>
+<p>default_webacl_action = "true"</p>
+<p>visibility_config = [{
+    cloudwatch_metrics_enabled  = "true"
+    sampled_requests_enabled    = "true"
+  }]</p>
+<p>managed_rule_group = [
+    {
+      name      = "tf-webacl-prod-1"
+      priority  = "1"</p>
+<pre><code>  override_action   = "count"
+
+  statement         = {
+    managed_rule_group_statement = {
+      name          = "AWSManagedRulesCommonRuleSet"
+      vendor_name   = "AWS"
+
+      excluded_rule = [{
+        name = "SizeRestrictions_QUERYSTRING"},
+      {
+        name = "NoUserAgent_HEADER"
+      }]
+    }
+  }
+
+  visibility_config = {
+    cloudwatch_metrics_enabled  = "true"
+    sampled_requests_enabled    = "true"
+  }
+},
+{
+  name      = "tf-webacl-prod-0"
+  priority  = "0"
+
+  override_action   = "count"
+
+  statement = {
+    managed_rule_group_statement = {
+      name          = "AWSManagedRulesPHPRuleSet"
+      vendor_name   = "AWS"
+    }
+  }
+  visibility_config = {
+    cloudwatch_metrics_enabled  = "true"
+    sampled_requests_enabled    = "true"
+  }
+}
+</code></pre>
+<p>]</p>
+<p>default_tags = {
+    Env = "Sandbox"
+    Team = "CloudTeam"
+  }
+}
+```</p>
+<h2 id="requirements">Requirements</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>aws</td>
+<td>~&gt; 3.18</td>
+</tr>
+<tr>
+<td>terraform</td>
+<td>~&gt; 0.13</td>
+</tr>
+</tbody>
+</table>
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+<h2 id="variables-inputs">Variables Inputs</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Required</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>web_acl_name</td>
+<td>O name do seu WAF WebACL.</td>
+<td><code>yes</code></td>
+<td><code>string</code></td>
+<td>``</td>
+</tr>
+<tr>
+<td>description</td>
+<td>Uma descrição para o seu WebACL.</td>
+<td><code>no</code></td>
+<td><code>string</code></td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td>default_webacl_action</td>
+<td>A ação a ser executada se nenhum dos rulescontidos no WebACL corresponder. Especifica que o AWS WAF deve permitir solicitações por padrão, valor <code>true</code>. Especifica que o AWS WAF deve bloquear solicitações por padrão, valor <code>false</code>.</td>
+<td><code>yes</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td>visibility_config</td>
+<td>Define e ativa as métricas para o CloudWatch e a coleta de amostra de solicitação da web.</td>
+<td><code>yes</code></td>
+<td><code>list</code></td>
+<td><code>[]</code></td>
+</tr>
+<tr>
+<td>managed_rule_group</td>
+<td>Uma declaração de regra usada para executar as regras que são definidas em um grupo de regras gerenciado pela AWS.</td>
+<td><code>yes</code></td>
+<td><code>list</code></td>
+<td><code>[]</code></td>
+</tr>
+<tr>
+<td>default_tags</td>
+<td>Block de chave-valor que fornece o taggeamento para todos os recursos criados em seu WAF WebACL.</td>
+<td><code>no</code></td>
+<td><code>map</code></td>
+<td><code>{}</code></td>
+</tr>
+<tr>
+<td>rate_based</td>
+<td>Uma regra baseada em taxa rastreia a taxa de solicitações para cada origem IP addresse aciona a ação da regra quando a taxa excede um limite que você especifica no número de solicitações em qualquer 5-minuteintervalo de tempo.</td>
+<td><code>no</code></td>
+<td><code>list</code></td>
+<td><code>[]</code></td>
+</tr>
+<tr>
+<td>scope</td>
+<td>Especifica se isso é para uma distribuição do AWS CloudFront ou para um aplicativo regional. Os valores válidos são <code>CLOUDFRONT</code> ou <code>REGIONAL</code>. Para trabalhar com o CloudFront, você também deve especificar a região us-east-1(N. Virginia) no provedor AWS.</td>
+<td><code>yes</code></td>
+<td><code>string</code></td>
+<td>``</td>
+</tr>
+</tbody>
+</table>
+<h2 id="variable-outputs">Variable Outputs</h2>
+<p><!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+| Name | Description |
+| ---- | ----------- |
+| id | O ID do WAF WebACL. |
+| arn | O ARN do WAF WebACL. |
+| capacity | A unidade de capacidade (WCUs) que atualmente o WebACL esta usando. |</p>
+</body></html>

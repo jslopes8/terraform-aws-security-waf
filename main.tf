@@ -151,3 +151,10 @@ resource "aws_wafv2_web_acl" "waf_acl"{
 #    count = var.create ? 1 : 0
 #
 #}
+
+resource "aws_wafv2_web_acl_association" "main" {
+  count = var.create ? length(var.resource_association) : 0
+
+  resource_arn = lookup(var.resource_association[count.index], "resource_association_arn", null)
+  web_acl_arn  = aws_wafv2_web_acl.waf_acl.0.arn
+}

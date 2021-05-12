@@ -41,3 +41,7 @@ variable "aggregate_key_type" {
   type = any
   default = []
 }
+variable "resource_association" {
+  type = any
+  default = {}
+}
